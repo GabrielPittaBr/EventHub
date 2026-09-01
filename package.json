@@ -1,0 +1,35 @@
+{
+  "name": "eventhub",
+  "version": "1.0.0",
+  "description": "Aplicacao web MVC para cadastro de eventos academicos/corporativos e controle de inscricoes.",
+  "main": "src/server.js",
+  "type": "commonjs",
+  "private": true,
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "node --watch src/server.js"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "author": "Gabriel Pitta",
+  "license": "MIT",
+  "overrides": {
+    "express-mysql-session": {
+      "mysql2": "^3.24.2"
+    }
+  },
+  "dependencies": {
+    "bcryptjs": "^3.0.3",
+    "dotenv": "^17.4.2",
+    "ejs": "^6.0.1",
+    "express": "^5.2.1",
+    "express-ejs-layouts": "^2.5.1",
+    "express-mysql-session": "^3.0.3",
+    "express-session": "^1.19.0",
+    "express-validator": "^7.3.2",
+    "helmet": "^8.3.0",
+    "method-override": "^3.0.0",
+    "mysql2": "^3.24.2"
+  }
+}

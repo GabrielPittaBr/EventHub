@@ -1,0 +1,7 @@
+<% if (mensagens && mensagens.length > 0) { %>
+  <div class="mensagens">
+    <% mensagens.forEach(function (mensagem) { %>
+      <p class="alerta alerta--<%= mensagem.tipo %>"><%= mensagem.texto %></p>
+    <% }); %>
+  </div>
+<% } %>

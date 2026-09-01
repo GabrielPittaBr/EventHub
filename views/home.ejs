@@ -1,0 +1,46 @@
+<section class="destaque">
+  <h1>Eventos abertos para inscrição</h1>
+  <p class="destaque__texto">
+    Encontre eventos acadêmicos e corporativos, veja as vagas disponíveis e garanta a sua.
+  </p>
+
+  <form class="busca" action="/" method="GET">
+    <label class="rotulo-oculto" for="busca">Buscar evento pelo título</label>
+    <input
+      class="campo"
+      type="search"
+      id="busca"
+      name="busca"
+      placeholder="Buscar pelo título do evento"
+      value="<%= busca %>"
+    />
+    <button class="botao botao--primario" type="submit">Buscar</button>
+  </form>
+</section>
+
+<% if (eventos.length === 0) { %>
+  <p class="vazio">Nenhum evento encontrado.</p>
+<% } else { %>
+  <ul class="grade-eventos">
+    <% eventos.forEach(function (evento) { %>
+      <li class="cartao">
+        <h2 class="cartao__titulo"><%= evento.titulo %></h2>
+        <dl class="cartao__dados">
+          <div>
+            <dt>Quando</dt>
+            <dd><%= evento.dataInicio %></dd>
+          </div>
+          <div>
+            <dt>Onde</dt>
+            <dd><%= evento.local %></dd>
+          </div>
+          <div>
+            <dt>Vagas restantes</dt>
+            <dd><%= evento.vagasRestantes %> de <%= evento.vagas %></dd>
+          </div>
+        </dl>
+        <a class="botao botao--secundario" href="/eventos/<%= evento.id %>">Ver detalhes</a>
+      </li>
+    <% }); %>
+  </ul>
+<% } %>
