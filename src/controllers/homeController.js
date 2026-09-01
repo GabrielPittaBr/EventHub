@@ -45,7 +45,6 @@ async function exibirHome(req, res, next) {
   try {
     res.render('home', {
       titulo: 'Eventos',
-      busca: '',
       eventos: EVENTOS_PROVISORIOS,
     });
   } catch (erro) {

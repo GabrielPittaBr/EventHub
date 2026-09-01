@@ -3,19 +3,6 @@
   <p class="destaque__texto">
     Encontre eventos acadêmicos e corporativos, veja as vagas disponíveis e garanta a sua.
   </p>
-
-  <form class="busca" action="/" method="GET">
-    <label class="rotulo-oculto" for="busca">Buscar evento pelo título</label>
-    <input
-      class="campo"
-      type="search"
-      id="busca"
-      name="busca"
-      placeholder="Buscar pelo título do evento"
-      value="<%= busca %>"
-    />
-    <button class="botao botao--primario" type="submit">Buscar</button>
-  </form>
 </section>
 
 <% if (eventos.length === 0) { %>
