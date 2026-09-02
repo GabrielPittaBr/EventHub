@@ -1,0 +1,100 @@
+<section class="destaque">
+  <h1>Criar conta</h1>
+  <p class="destaque__texto">
+    Escolha como voce vai usar o EventHub: organizando eventos ou se inscrevendo neles.
+  </p>
+</section>
+
+<form class="formulario" action="/auth/registrar" method="POST" novalidate>
+  <div class="campo-grupo">
+    <label for="nome">Nome</label>
+    <input
+      class="campo <%= erros.nome ? 'campo--invalido' : '' %>"
+      type="text"
+      id="nome"
+      name="nome"
+      value="<%= valores.nome %>"
+      maxlength="120"
+      autocomplete="name"
+      required
+    />
+    <% if (erros.nome) { %>
+      <span class="campo-erro"><%= erros.nome %></span>
+    <% } %>
+  </div>
+
+  <div class="campo-grupo">
+    <label for="email">E-mail</label>
+    <input
+      class="campo <%= erros.email ? 'campo--invalido' : '' %>"
+      type="email"
+      id="email"
+      name="email"
+      value="<%= valores.email %>"
+      maxlength="180"
+      autocomplete="email"
+      required
+    />
+    <% if (erros.email) { %>
+      <span class="campo-erro"><%= erros.email %></span>
+    <% } %>
+  </div>
+
+  <div class="campo-grupo">
+    <label for="senha">Senha</label>
+    <input
+      class="campo <%= erros.senha ? 'campo--invalido' : '' %>"
+      type="password"
+      id="senha"
+      name="senha"
+      autocomplete="new-password"
+      required
+    />
+    <% if (erros.senha) { %>
+      <span class="campo-erro"><%= erros.senha %></span>
+    <% } else { %>
+      <span class="campo-ajuda">Pelo menos 8 caracteres.</span>
+    <% } %>
+  </div>
+
+  <div class="campo-grupo">
+    <label for="confirmacaoSenha">Confirmar senha</label>
+    <input
+      class="campo <%= erros.confirmacaoSenha ? 'campo--invalido' : '' %>"
+      type="password"
+      id="confirmacaoSenha"
+      name="confirmacaoSenha"
+      autocomplete="new-password"
+      required
+    />
+    <% if (erros.confirmacaoSenha) { %>
+      <span class="campo-erro"><%= erros.confirmacaoSenha %></span>
+    <% } %>
+  </div>
+
+  <div class="campo-grupo">
+    <label for="papel">Como voce vai usar</label>
+    <select
+      class="campo <%= erros.papel ? 'campo--invalido' : '' %>"
+      id="papel"
+      name="papel"
+      required
+    >
+      <option value="" <%= valores.papel === '' ? 'selected' : '' %>>Selecione</option>
+      <option value="participante" <%= valores.papel === 'participante' ? 'selected' : '' %>>
+        Participante — quero me inscrever em eventos
+      </option>
+      <option value="organizador" <%= valores.papel === 'organizador' ? 'selected' : '' %>>
+        Organizador — quero publicar eventos
+      </option>
+    </select>
+    <% if (erros.papel) { %>
+      <span class="campo-erro"><%= erros.papel %></span>
+    <% } %>
+  </div>
+
+  <div class="acoes">
+    <button class="botao botao--primario" type="submit">Criar conta</button>
+    <a class="botao botao--texto" href="/auth/login">Ja tenho conta</a>
+  </div>
+</form>

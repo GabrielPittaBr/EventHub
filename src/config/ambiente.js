@@ -19,6 +19,7 @@ const VARIAVEIS_OBRIGATORIAS = [
   'DB_PASSWORD',
   'DB_NAME',
   'DB_SSL_CA',
+  'SESSION_SECRET',
 ];
 
 /**
@@ -39,6 +40,9 @@ const ambiente = {
     nome: process.env.DB_NAME,
     sslCa: process.env.DB_SSL_CA,
   },
+  // Segredo que assina o cookie de sessao. Nunca tem fallback no codigo: um
+  // valor padrao em producao deixaria qualquer um forjar uma sessao.
+  sessaoSegredo: process.env.SESSION_SECRET,
 };
 
 ambiente.emProducao = ambiente.nodeEnv === 'production';
