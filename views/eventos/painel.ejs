@@ -1,0 +1,56 @@
+<section class="destaque">
+  <h1>Painel do organizador</h1>
+  <p class="destaque__texto">Os eventos que voce publicou, dos mais proximos aos ja realizados.</p>
+
+  <div class="acoes">
+    <a class="botao botao--primario" href="/eventos/novo">Novo evento</a>
+  </div>
+</section>
+
+<% if (eventos.length === 0) { %>
+  <p class="vazio">Voce ainda nao publicou nenhum evento. Comece criando o primeiro.</p>
+<% } else { %>
+  <div class="tabela-wrapper">
+    <table class="tabela">
+      <thead>
+        <tr>
+          <th scope="col">Evento</th>
+          <th scope="col">Inicio</th>
+          <th scope="col">Local</th>
+          <th scope="col">Vagas</th>
+          <th scope="col">Acoes</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% eventos.forEach(function (evento) { %>
+          <tr>
+            <td><a href="/eventos/<%= evento.id %>"><%= evento.titulo %></a></td>
+            <td><%= formatarDataHora(evento.data_inicio) %></td>
+            <td><%= evento.local %></td>
+            <td><%= evento.vagas_restantes %> de <%= evento.vagas %></td>
+            <td>
+              <div class="acoes">
+                <a class="botao botao--secundario" href="/eventos/<%= evento.id %>/editar">Editar</a>
+                <a class="botao botao--secundario" href="/eventos/<%= evento.id %>/inscritos">Inscritos</a>
+<%#
+                  A confirmacao nao interpola o titulo: dentro de uma string
+                  JavaScript o escape de HTML nao protege, porque o navegador
+                  desfaz as entidades antes de o JS ser lido, e um apostrofo no
+                  titulo quebraria (ou sequestraria) o handler.
+                  O titulo ja aparece na propria linha da tabela.
+                %>
+                <form
+                  action="/eventos/<%= evento.id %>?_method=DELETE"
+                  method="POST"
+                  onsubmit="return confirm('Excluir este evento? As inscricoes feitas nele tambem serao apagadas.');"
+                >
+                  <button class="botao botao--perigo" type="submit">Excluir</button>
+                </form>
+              </div>
+            </td>
+          </tr>
+        <% }); %>
+      </tbody>
+    </table>
+  </div>
+<% } %>

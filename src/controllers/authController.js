@@ -1,9 +1,9 @@
 'use strict';
 
 const bcrypt = require('bcryptjs');
-const { validationResult } = require('express-validator');
 
 const { NOME_DO_COOKIE } = require('../config/sessao');
+const { errosPorCampo } = require('../helpers/validacao');
 const usuarioModel = require('../models/usuarioModel');
 
 const CUSTO_DO_HASH = 10;
@@ -22,26 +22,6 @@ const CREDENCIAL_INVALIDA = 'E-mail ou senha invalidos.';
  * revelaria o que a mensagem generica esconde.
  */
 const HASH_DE_COMPARACAO = bcrypt.hashSync('senha-inexistente', CUSTO_DO_HASH);
-
-/**
- * Converte os erros do express-validator em um objeto indexado pelo nome do
- * campo, que e o formato que a view usa para mostrar cada erro embaixo do seu
- * proprio campo.
- *
- * @param {import('express').Request} req Requisicao HTTP ja validada.
- * @returns {Object<string, string>} Erros por campo; vazio quando nao ha erro.
- */
-function errosPorCampo(req) {
-  const erros = {};
-
-  for (const erro of validationResult(req).array()) {
-    if (!erros[erro.path]) {
-      erros[erro.path] = erro.msg;
-    }
-  }
-
-  return erros;
-}
 
 /**
  * Troca o identificador da sessao e grava o usuario logado.

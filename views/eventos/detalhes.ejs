@@ -1,0 +1,36 @@
+<section class="destaque">
+  <h1><%= evento.titulo %></h1>
+  <p class="destaque__texto">Organizado por <%= evento.organizador_nome %>.</p>
+</section>
+
+<article class="cartao">
+  <dl class="cartao__dados">
+    <div>
+      <dt>Inicio</dt>
+      <dd><%= formatarDataHora(evento.data_inicio) %></dd>
+    </div>
+    <div>
+      <dt>Termino</dt>
+      <dd><%= formatarDataHora(evento.data_fim) %></dd>
+    </div>
+    <div>
+      <dt>Local</dt>
+      <dd><%= evento.local %></dd>
+    </div>
+    <div>
+      <dt>Vagas</dt>
+      <dd><%= evento.vagas_restantes %> restantes de <%= evento.vagas %></dd>
+    </div>
+  </dl>
+
+  <h2 class="cartao__titulo">Sobre o evento</h2>
+  <p><%= evento.descricao %></p>
+
+  <div class="acoes">
+    <a class="botao botao--secundario" href="/">Voltar para os eventos</a>
+
+    <% if (usuario && usuario.id === evento.organizador_id) { %>
+      <a class="botao botao--primario" href="/eventos/<%= evento.id %>/editar">Editar evento</a>
+    <% } %>
+  </div>
+</article>
