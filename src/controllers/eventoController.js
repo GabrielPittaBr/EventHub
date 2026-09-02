@@ -1,31 +1,10 @@
 'use strict';
 
-const { paraCampoDataHora, paraDataHoraDoBanco } = require('../helpers/formato');
+const { dataJaPassou, paraCampoDataHora, paraDataHoraDoBanco } = require('../helpers/formato');
+const { eventoDaUrl, eventoDoOrganizador } = require('../helpers/rota');
 const { errosPorCampo } = require('../helpers/validacao');
 const eventoModel = require('../models/eventoModel');
-
-/**
- * Le o id da URL aceitando apenas inteiro positivo.
- *
- * Um id como "abc" ou "9 OR 1=1" vira null e o chamador responde 404, em vez de
- * chegar ao banco e virar erro 500.
- *
- * @param {string} valor Trecho da URL.
- * @returns {number|null} Id valido ou null.
- */
-function idValido(valor) {
-  return /^[1-9]\d*$/.test(valor) ? Number(valor) : null;
-}
-
-/**
- * Responde a pagina de nao encontrado.
- *
- * @param {import('express').Response} res Resposta HTTP.
- * @returns {void}
- */
-function naoEncontrado(res) {
-  res.status(404).render('erros/404', { titulo: 'Pagina nao encontrada' });
-}
+const inscricaoModel = require('../models/inscricaoModel');
 
 /**
  * Monta o que o formulario de evento precisa para ser exibido ou reexibido.
@@ -66,63 +45,6 @@ function valoresDoCorpo(corpo) {
 }
 
 /**
- * Busca o evento apontado pela URL, respondendo 404 quando o id nao presta ou
- * nao existe evento com ele.
- *
- * @async
- * @param {import('express').Request} req Requisicao HTTP.
- * @param {import('express').Response} res Resposta HTTP.
- * @returns {Promise<object|null>} O evento, ou null quando o 404 ja foi enviado.
- * @throws {Error} Quando a consulta ao banco falha.
- */
-async function eventoDaUrl(req, res) {
-  const id = idValido(req.params.id);
-
-  if (id === null) {
-    naoEncontrado(res);
-    return null;
-  }
-
-  const evento = await eventoModel.buscarPorId(id);
-
-  if (!evento) {
-    naoEncontrado(res);
-    return null;
-  }
-
-  return evento;
-}
-
-/**
- * Busca o evento da URL e confere se ele pertence a quem esta pedindo.
- *
- * Esta e a regra de propriedade do ticket: ela roda no servidor em toda acao de
- * edicao e exclusao, entao esconder o botao na tela nunca e a unica barreira —
- * um PUT ou DELETE forjado para um evento alheio para aqui.
- *
- * @async
- * @param {import('express').Request} req Requisicao HTTP.
- * @param {import('express').Response} res Resposta HTTP.
- * @returns {Promise<object|null>} O evento quando o acesso e permitido; null
- *   quando a resposta (404 ou 403) ja foi enviada.
- * @throws {Error} Quando a consulta ao banco falha.
- */
-async function eventoDoOrganizador(req, res) {
-  const evento = await eventoDaUrl(req, res);
-
-  if (!evento) {
-    return null;
-  }
-
-  if (evento.organizador_id !== req.session.usuario.id) {
-    res.status(403).render('erros/403', { titulo: 'Acesso negado' });
-    return null;
-  }
-
-  return evento;
-}
-
-/**
  * Exibe a pagina publica de um evento.
  *
  * @async
@@ -140,7 +62,20 @@ async function exibirDetalhes(req, res, next) {
       return;
     }
 
-    res.render('eventos/detalhes', { titulo: evento.titulo, evento });
+    // A inscricao de quem esta olhando decide o que a pagina oferece:
+    // inscrever-se, cancelar ou entrar na conta. Visitante deslogado nao tem
+    // inscricao a procurar.
+    const usuario = req.session.usuario;
+    const inscricao = usuario
+      ? await inscricaoModel.buscarDeUsuarioEmEvento(evento.id, usuario.id)
+      : null;
+
+    res.render('eventos/detalhes', {
+      titulo: evento.titulo,
+      evento,
+      inscricao,
+      inscricoesEncerradas: dataJaPassou(evento.data_inicio),
+    });
   } catch (erro) {
     next(erro);
   }

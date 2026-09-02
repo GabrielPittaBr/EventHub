@@ -65,6 +65,19 @@ function pedacosDaData(valor) {
 }
 
 /**
+ * Diz se uma data ja ficou para tras. E esta a regra que fecha as inscricoes:
+ * evento que ja comecou nao aceita mais ninguem.
+ *
+ * @param {Date|string} valor Data vinda do banco.
+ * @returns {boolean} true quando a data e valida e ja passou.
+ */
+function dataJaPassou(valor) {
+  const data = paraData(valor);
+
+  return data !== null && data.getTime() <= Date.now();
+}
+
+/**
  * Formata uma data para leitura na tela, no padrao brasileiro.
  *
  * @param {Date|string} valor Data vinda do banco.
@@ -114,4 +127,4 @@ function paraDataHoraDoBanco(valor) {
   return semT.length === 16 ? `${semT}:00` : semT;
 }
 
-module.exports = { formatarDataHora, paraCampoDataHora, paraDataHoraDoBanco };
+module.exports = { dataJaPassou, formatarDataHora, paraCampoDataHora, paraDataHoraDoBanco };

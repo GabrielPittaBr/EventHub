@@ -1,0 +1,54 @@
+<section class="destaque">
+  <h1>Minhas inscricoes</h1>
+  <p class="destaque__texto">
+    Os eventos em que voce se inscreveu, dos mais proximos aos ja realizados.
+  </p>
+</section>
+
+<% if (inscricoes.length === 0) { %>
+  <p class="vazio">
+    Voce ainda nao tem inscricoes. Escolha um evento na lista e garanta a sua vaga.
+  </p>
+
+  <div class="acoes">
+    <a class="botao botao--primario" href="/">Ver eventos abertos</a>
+  </div>
+<% } else { %>
+  <div class="tabela-wrapper">
+    <table class="tabela">
+      <thead>
+        <tr>
+          <th scope="col">Evento</th>
+          <th scope="col">Inicio</th>
+          <th scope="col">Local</th>
+          <th scope="col">Status</th>
+          <th scope="col">Acoes</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% inscricoes.forEach(function (inscricao) { %>
+          <tr>
+            <td><a href="/eventos/<%= inscricao.evento_id %>"><%= inscricao.titulo %></a></td>
+            <td><%= formatarDataHora(inscricao.data_inicio) %></td>
+            <td><%= inscricao.local %></td>
+            <td>
+              <span class="selo selo--<%= inscricao.status %>"><%= inscricao.status %></span>
+            </td>
+            <td>
+              <div class="acoes">
+                <a class="botao botao--secundario" href="/eventos/<%= inscricao.evento_id %>">
+                  Ver evento
+                </a>
+                <% if (inscricao.status === 'confirmada') { %>
+                  <form action="/inscricoes/<%= inscricao.id %>?_method=DELETE" method="POST">
+                    <button class="botao botao--perigo" type="submit">Cancelar</button>
+                  </form>
+                <% } %>
+              </div>
+            </td>
+          </tr>
+        <% }); %>
+      </tbody>
+    </table>
+  </div>
+<% } %>

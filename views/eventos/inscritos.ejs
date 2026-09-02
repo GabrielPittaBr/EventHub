@@ -1,0 +1,42 @@
+<section class="destaque">
+  <h1>Inscritos</h1>
+  <p class="destaque__texto">
+    <%= evento.titulo %> — <%= evento.inscricoes_confirmadas %> de <%= evento.vagas %> vagas
+    preenchidas. A lista traz quem esta com a inscricao confirmada; quem cancelou libera a
+    vaga e sai daqui.
+  </p>
+
+  <div class="acoes">
+    <a class="botao botao--secundario" href="/painel">Voltar para o painel</a>
+    <a class="botao botao--secundario" href="/eventos/<%= evento.id %>">Ver o evento</a>
+  </div>
+</section>
+
+<% if (inscritos.length === 0) { %>
+  <p class="vazio">Ninguem se inscreveu neste evento ainda.</p>
+<% } else { %>
+  <div class="tabela-wrapper">
+    <table class="tabela">
+      <thead>
+        <tr>
+          <th scope="col">Nome</th>
+          <th scope="col">E-mail</th>
+          <th scope="col">Status</th>
+          <th scope="col">Inscrito em</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% inscritos.forEach(function (inscrito) { %>
+          <tr>
+            <td><%= inscrito.nome %></td>
+            <td><%= inscrito.email %></td>
+            <td>
+              <span class="selo selo--<%= inscrito.status %>"><%= inscrito.status %></span>
+            </td>
+            <td><%= formatarDataHora(inscrito.criado_em) %></td>
+          </tr>
+        <% }); %>
+      </tbody>
+    </table>
+  </div>
+<% } %>
