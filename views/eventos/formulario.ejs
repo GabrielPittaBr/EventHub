@@ -1,0 +1,115 @@
+<section class="destaque">
+  <h1><%= editando ? 'Editar evento' : 'Novo evento' %></h1>
+  <p class="destaque__texto">
+    Os participantes veem estas informacoes na pagina do evento.
+  </p>
+</section>
+
+<form
+  class="formulario"
+  action="<%= editando ? '/eventos/' + id + '?_method=PUT' : '/eventos' %>"
+  method="POST"
+  novalidate
+>
+  <div class="campo-grupo">
+    <label for="titulo">Titulo</label>
+    <input
+      class="campo <%= erros.titulo ? 'campo--invalido' : '' %>"
+      type="text"
+      id="titulo"
+      name="titulo"
+      value="<%= valores.titulo %>"
+      maxlength="160"
+      required
+    />
+    <% if (erros.titulo) { %>
+      <span class="campo-erro"><%= erros.titulo %></span>
+    <% } %>
+  </div>
+
+  <div class="campo-grupo">
+    <label for="descricao">Descricao</label>
+    <textarea
+      class="campo <%= erros.descricao ? 'campo--invalido' : '' %>"
+      id="descricao"
+      name="descricao"
+      maxlength="5000"
+      required
+    ><%= valores.descricao %></textarea>
+    <% if (erros.descricao) { %>
+      <span class="campo-erro"><%= erros.descricao %></span>
+    <% } %>
+  </div>
+
+  <div class="campo-grupo">
+    <label for="local">Local</label>
+    <input
+      class="campo <%= erros.local ? 'campo--invalido' : '' %>"
+      type="text"
+      id="local"
+      name="local"
+      value="<%= valores.local %>"
+      maxlength="160"
+      required
+    />
+    <% if (erros.local) { %>
+      <span class="campo-erro"><%= erros.local %></span>
+    <% } %>
+  </div>
+
+  <div class="campo-grupo">
+    <label for="dataInicio">Inicio</label>
+    <input
+      class="campo <%= erros.dataInicio ? 'campo--invalido' : '' %>"
+      type="datetime-local"
+      id="dataInicio"
+      name="dataInicio"
+      value="<%= valores.dataInicio %>"
+      required
+    />
+    <% if (erros.dataInicio) { %>
+      <span class="campo-erro"><%= erros.dataInicio %></span>
+    <% } %>
+  </div>
+
+  <div class="campo-grupo">
+    <label for="dataFim">Termino</label>
+    <input
+      class="campo <%= erros.dataFim ? 'campo--invalido' : '' %>"
+      type="datetime-local"
+      id="dataFim"
+      name="dataFim"
+      value="<%= valores.dataFim %>"
+      required
+    />
+    <% if (erros.dataFim) { %>
+      <span class="campo-erro"><%= erros.dataFim %></span>
+    <% } %>
+  </div>
+
+  <div class="campo-grupo">
+    <label for="vagas">Vagas</label>
+    <input
+      class="campo <%= erros.vagas ? 'campo--invalido' : '' %>"
+      type="number"
+      id="vagas"
+      name="vagas"
+      value="<%= valores.vagas %>"
+      min="1"
+      step="1"
+      required
+    />
+    <% if (erros.vagas) { %>
+      <span class="campo-erro"><%= erros.vagas %></span>
+    <% } else { %>
+      <span class="campo-ajuda">Total de vagas oferecidas, um numero inteiro maior que zero.</span>
+    <% } %>
+  </div>
+
+  <div class="acoes">
+    <button class="botao botao--primario" type="submit">
+      <%= editando ? 'Salvar alteracoes' : 'Criar evento' %>
+    </button>
+    <a class="botao botao--texto" href="/painel">Cancelar</a>
+  </div>
+</form>

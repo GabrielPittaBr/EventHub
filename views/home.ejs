@@ -1,12 +1,35 @@
 <section class="destaque">
-  <h1>Eventos abertos para inscrição</h1>
+  <h1>Eventos abertos para inscricao</h1>
   <p class="destaque__texto">
-    Encontre eventos acadêmicos e corporativos, veja as vagas disponíveis e garanta a sua.
+    Encontre eventos academicos e corporativos, veja as vagas disponiveis e garanta a sua.
   </p>
+
+  <form class="busca" action="/" method="GET">
+    <label class="rotulo-oculto" for="busca">Buscar por titulo</label>
+    <input
+      class="campo"
+      type="search"
+      id="busca"
+      name="busca"
+      value="<%= busca %>"
+      placeholder="Buscar por titulo"
+      maxlength="160"
+    />
+    <button class="botao botao--primario" type="submit">Buscar</button>
+    <% if (busca) { %>
+      <a class="botao botao--texto" href="/">Limpar</a>
+    <% } %>
+  </form>
 </section>
 
 <% if (eventos.length === 0) { %>
-  <p class="vazio">Nenhum evento encontrado.</p>
+  <p class="vazio">
+    <% if (busca) { %>
+      Nenhum evento futuro encontrado para "<%= busca %>". Tente outro termo ou veja todos os eventos.
+    <% } else { %>
+      Nenhum evento futuro publicado por enquanto. Volte em breve.
+    <% } %>
+  </p>
 <% } else { %>
   <ul class="grade-eventos">
     <% eventos.forEach(function (evento) { %>
@@ -15,7 +38,7 @@
         <dl class="cartao__dados">
           <div>
             <dt>Quando</dt>
-            <dd><%= evento.dataInicio %></dd>
+            <dd><%= formatarDataHora(evento.data_inicio) %></dd>
           </div>
           <div>
             <dt>Onde</dt>
@@ -23,7 +46,7 @@
           </div>
           <div>
             <dt>Vagas restantes</dt>
-            <dd><%= evento.vagasRestantes %> de <%= evento.vagas %></dd>
+            <dd><%= evento.vagas_restantes %> de <%= evento.vagas %></dd>
           </div>
         </dl>
         <a class="botao botao--secundario" href="/eventos/<%= evento.id %>">Ver detalhes</a>

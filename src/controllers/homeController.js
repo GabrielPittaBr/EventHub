@@ -1,51 +1,30 @@
 'use strict';
 
-/**
- * Eventos de exemplo usados apenas enquanto a camada de banco nao existe.
- * Serao substituidos pela consulta ao banco quando a listagem real entrar.
- */
-const EVENTOS_PROVISORIOS = [
-  {
-    id: 1,
-    titulo: 'Semana de Tecnologia',
-    local: 'Auditorio Central',
-    dataInicio: '12/09/2026 19:00',
-    vagas: 80,
-    vagasRestantes: 34,
-  },
-  {
-    id: 2,
-    titulo: 'Oficina de Banco de Dados',
-    local: 'Laboratorio 3',
-    dataInicio: '20/09/2026 14:00',
-    vagas: 25,
-    vagasRestantes: 6,
-  },
-  {
-    id: 3,
-    titulo: 'Palestra: Carreira em TI',
-    local: 'Sala 12',
-    dataInicio: '02/10/2026 09:00',
-    vagas: 40,
-    vagasRestantes: 40,
-  },
-];
+const eventoModel = require('../models/eventoModel');
 
 /**
- * Renderiza a pagina inicial com a lista publica de eventos.
+ * Renderiza a pagina inicial com os eventos futuros, filtrados pelo termo de
+ * busca quando ele vem na query string.
+ *
+ * O termo volta para a view para continuar no campo depois da busca, e a
+ * propria view cuida do estado vazio quando nada e encontrado.
  *
  * @async
  * @param {import('express').Request} req Requisicao HTTP.
  * @param {import('express').Response} res Resposta HTTP.
  * @param {import('express').NextFunction} next Encaminha o erro ao tratador central.
  * @returns {Promise<void>} Renderiza a view da home.
- * @throws {Error} Quando a renderizacao da view falha.
+ * @throws {Error} Quando a consulta ao banco falha.
  */
 async function exibirHome(req, res, next) {
   try {
+    const busca = typeof req.query.busca === 'string' ? req.query.busca.trim() : '';
+    const eventos = await eventoModel.listarFuturos(busca);
+
     res.render('home', {
       titulo: 'Eventos',
-      eventos: EVENTOS_PROVISORIOS,
+      eventos,
+      busca,
     });
   } catch (erro) {
     next(erro);

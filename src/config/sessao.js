@@ -56,4 +56,4 @@ const sessao = session({
   },
 });
 
-module.exports = { sessao, NOME_DO_COOKIE };
+module.exports = { sessao, armazenamento, NOME_DO_COOKIE };
