@@ -266,6 +266,11 @@ a:hover {
   margin: 0;
 }
 
+.cartao__status {
+  margin-top: var(--espaco-md);
+  color: var(--cor-texto-suave);
+}
+
 .grade-eventos {
   list-style: none;
   margin: 0;
@@ -436,6 +441,12 @@ textarea.campo {
 .selo--cancelada {
   background-color: var(--cor-erro-clara);
   color: #a91b1b;
+}
+
+.selo--indisponivel {
+  background-color: var(--cor-fundo);
+  border: 1px solid var(--cor-borda);
+  color: var(--cor-texto-suave);
 }
 
 /* ---------- Rodape ---------- */
