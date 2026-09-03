@@ -33,16 +33,17 @@
                 <a class="botao botao--secundario" href="/eventos/<%= evento.id %>/editar">Editar</a>
                 <a class="botao botao--secundario" href="/eventos/<%= evento.id %>/inscritos">Inscritos</a>
 <%#
-                  A confirmacao nao interpola o titulo: dentro de uma string
-                  JavaScript o escape de HTML nao protege, porque o navegador
-                  desfaz as entidades antes de o JS ser lido, e um apostrofo no
-                  titulo quebraria (ou sequestraria) o handler.
-                  O titulo ja aparece na propria linha da tabela.
+                  A pergunta vive em data-confirmar, lida por
+                  /js/confirmacao.js: a CSP do helmet bloqueia onsubmit inline,
+                  e um formulario de exclusao sem confirmacao apagaria o evento
+                  no primeiro clique.
+                  O titulo nao entra na pergunta porque ja aparece na propria
+                  linha da tabela.
                 %>
                 <form
                   action="/eventos/<%= evento.id %>?_method=DELETE"
                   method="POST"
-                  onsubmit="return confirm('Excluir este evento? As inscricoes feitas nele tambem serao apagadas.');"
+                  data-confirmar="Excluir este evento? As inscricoes feitas nele tambem serao apagadas."
                 >
                   <button class="botao botao--perigo" type="submit">Excluir</button>
                 </form>

@@ -86,7 +86,7 @@ Depois, se quiser voltar a desenvolver contra o MySQL local, é só restaurar os
    | Health Check Path | `/health` |
    | Instance Type | `Free` |
 
-4. A versão do Node vem de `engines.node` no `package.json`. Para fixar uma versão exata, cadastre também a variável `NODE_VERSION` (ex.: `22`).
+4. A versão do Node vem do arquivo `.node-version` do repositório (hoje `22`, a LTS que o Render usa por padrão). `engines.node` no `package.json` marca só o mínimo aceito.
 5. **Não** clique em *Deploy* ainda: cadastre as variáveis de ambiente primeiro (próximo passo). Sem elas a aplicação sobe e morre na hora, dizendo qual variável falta.
 
 ## 6. Cadastrar as variáveis de ambiente no Render
