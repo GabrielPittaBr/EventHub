@@ -4,7 +4,7 @@ Aplicação web para cadastro de eventos acadêmicos/corporativos e controle de 
 
 Organizadores criam e administram eventos e veem a lista de inscritos; participantes se inscrevem, cancelam e acompanham as próprias inscrições. Toda a interface é renderizada no servidor.
 
-**Deploy:** _(a preencher com a URL de produção)_
+**Deploy:** (https://eventhub-pwqh.onrender.com/)
 
 ## Stack
 
