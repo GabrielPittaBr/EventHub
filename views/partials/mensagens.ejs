@@ -1,5 +1,5 @@
 <% if (mensagens && mensagens.length > 0) { %>
-  <div class="mensagens">
+  <div class="mensagens" role="status" aria-live="polite">
     <% mensagens.forEach(function (mensagem) { %>
       <p class="alerta alerta--<%= mensagem.tipo %>"><%= mensagem.texto %></p>
     <% }); %>

@@ -1,19 +1,21 @@
-<section class="destaque">
-  <h1>Inscritos</h1>
-  <p class="destaque__texto">
-    <%= evento.titulo %> — <%= evento.inscricoes_confirmadas %> de <%= evento.vagas %> vagas
-    preenchidas. A lista traz quem esta com a inscricao confirmada; quem cancelou libera a
-    vaga e sai daqui.
+<section class="abertura">
+  <h1 class="abertura__titulo">Quem vai a <%= evento.titulo %></h1>
+  <p class="abertura__linha">
+    <%= evento.inscricoes_confirmadas %> de <%= evento.vagas %> vagas preenchidas. Quem cancela
+    sai da lista e libera a vaga.
   </p>
 
-  <div class="acoes">
-    <a class="botao botao--secundario" href="/painel">Voltar para o painel</a>
-    <a class="botao botao--secundario" href="/eventos/<%= evento.id %>">Ver o evento</a>
+  <div class="acoes abertura__acoes">
+    <a class="botao botao--secundario" href="/painel">Voltar para meus eventos</a>
+    <a class="botao botao--secundario" href="/eventos/<%= evento.id %>">Ver a página do evento</a>
   </div>
 </section>
 
 <% if (inscritos.length === 0) { %>
-  <p class="vazio">Ninguem se inscreveu neste evento ainda.</p>
+  <div class="vazio">
+    <p>Ninguém se inscreveu ainda. Compartilhe o link da página do evento para começar a encher.</p>
+    <a class="botao botao--secundario" href="/eventos/<%= evento.id %>">Abrir a página do evento</a>
+  </div>
 <% } else { %>
   <div class="tabela-wrapper">
     <table class="tabela">
@@ -21,7 +23,7 @@
         <tr>
           <th scope="col">Nome</th>
           <th scope="col">E-mail</th>
-          <th scope="col">Status</th>
+          <th scope="col">Situação</th>
           <th scope="col">Inscrito em</th>
         </tr>
       </thead>
@@ -33,7 +35,7 @@
             <td>
               <span class="selo selo--<%= inscrito.status %>"><%= inscrito.status %></span>
             </td>
-            <td><%= formatarDataHora(inscrito.criado_em) %></td>
+            <td class="data"><%= formatarDataHora(inscrito.criado_em) %></td>
           </tr>
         <% }); %>
       </tbody>

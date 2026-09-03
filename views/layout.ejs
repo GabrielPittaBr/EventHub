@@ -3,13 +3,22 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#123a33" />
     <title><%= typeof titulo !== 'undefined' && titulo ? titulo + ' | EventHub' : 'EventHub' %></title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..700&display=swap"
+    />
     <link rel="stylesheet" href="/css/estilo.css" />
   </head>
   <body>
+    <a class="pular-para-conteudo" href="#conteudo">Ir para o conteúdo</a>
+
     <%- include('partials/cabecalho') %>
 
-    <main class="conteudo">
+    <main class="conteudo" id="conteudo">
       <div class="container">
         <%- include('partials/mensagens') %>
         <%- body %>

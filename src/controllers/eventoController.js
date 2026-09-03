@@ -18,7 +18,7 @@ const inscricaoModel = require('../models/inscricaoModel');
  */
 function dadosDoFormulario({ valores, erros, editando, id }) {
   return {
-    titulo: editando ? 'Editar evento' : 'Novo evento',
+    titulo: editando ? 'Editar evento' : 'Publicar evento',
     editando,
     id,
     erros,
@@ -92,7 +92,7 @@ async function exibirPainel(req, res, next) {
   try {
     const eventos = await eventoModel.listarPorOrganizador(req.session.usuario.id);
 
-    res.render('eventos/painel', { titulo: 'Painel do organizador', eventos });
+    res.render('eventos/painel', { titulo: 'Meus eventos', eventos });
   } catch (erro) {
     next(erro);
   }
@@ -271,7 +271,7 @@ async function excluir(req, res, next) {
 
     await eventoModel.excluir(evento.id);
 
-    req.adicionarMensagem('sucesso', 'Evento excluido.');
+    req.adicionarMensagem('sucesso', 'Evento excluído.');
     res.redirect('/painel');
   } catch (erro) {
     next(erro);

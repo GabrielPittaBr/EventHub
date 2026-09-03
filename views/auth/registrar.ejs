@@ -1,7 +1,7 @@
-<section class="destaque">
-  <h1>Criar conta</h1>
-  <p class="destaque__texto">
-    Escolha como voce vai usar o EventHub: organizando eventos ou se inscrevendo neles.
+<section class="abertura">
+  <h1 class="abertura__titulo">Criar conta</h1>
+  <p class="abertura__linha">
+    Escolha como você vai usar o EventHub: organizando eventos ou se inscrevendo neles.
   </p>
 </section>
 
@@ -20,6 +20,8 @@
     />
     <% if (erros.nome) { %>
       <span class="campo-erro"><%= erros.nome %></span>
+    <% } else { %>
+      <span class="campo-ajuda">É o nome que aparece para quem organiza o evento.</span>
     <% } %>
   </div>
 
@@ -73,7 +75,7 @@
   </div>
 
   <div class="campo-grupo">
-    <label for="papel">Como voce vai usar</label>
+    <label for="papel">Como você vai usar</label>
     <select
       class="campo <%= erros.papel ? 'campo--invalido' : '' %>"
       id="papel"
@@ -82,19 +84,21 @@
     >
       <option value="" <%= valores.papel === '' ? 'selected' : '' %>>Selecione</option>
       <option value="participante" <%= valores.papel === 'participante' ? 'selected' : '' %>>
-        Participante — quero me inscrever em eventos
+        Quero me inscrever em eventos
       </option>
       <option value="organizador" <%= valores.papel === 'organizador' ? 'selected' : '' %>>
-        Organizador — quero publicar eventos
+        Quero publicar eventos
       </option>
     </select>
     <% if (erros.papel) { %>
       <span class="campo-erro"><%= erros.papel %></span>
+    <% } else { %>
+      <span class="campo-ajuda">Isso define o que você vê depois de entrar.</span>
     <% } %>
   </div>
 
   <div class="acoes">
     <button class="botao botao--primario" type="submit">Criar conta</button>
-    <a class="botao botao--texto" href="/auth/login">Ja tenho conta</a>
+    <a class="botao botao--texto" href="/auth/login">Já tenho conta</a>
   </div>
 </form>

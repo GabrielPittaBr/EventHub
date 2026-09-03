@@ -1,42 +1,49 @@
-<section class="destaque">
-  <h1>Painel do organizador</h1>
-  <p class="destaque__texto">Os eventos que voce publicou, dos mais proximos aos ja realizados.</p>
+<section class="abertura">
+  <h1 class="abertura__titulo">Meus eventos</h1>
+  <p class="abertura__linha">
+    O que você publicou, dos mais próximos aos já realizados.
+  </p>
 
-  <div class="acoes">
-    <a class="botao botao--primario" href="/eventos/novo">Novo evento</a>
+  <div class="acoes abertura__acoes">
+    <a class="botao botao--primario" href="/eventos/novo">Publicar evento</a>
   </div>
 </section>
 
 <% if (eventos.length === 0) { %>
-  <p class="vazio">Voce ainda nao publicou nenhum evento. Comece criando o primeiro.</p>
+  <div class="vazio">
+    <p>Você ainda não publicou nenhum evento. O primeiro leva menos de um minuto.</p>
+    <a class="botao botao--secundario" href="/eventos/novo">Publicar evento</a>
+  </div>
 <% } else { %>
   <div class="tabela-wrapper">
     <table class="tabela">
       <thead>
         <tr>
           <th scope="col">Evento</th>
-          <th scope="col">Inicio</th>
+          <th scope="col">Início</th>
           <th scope="col">Local</th>
-          <th scope="col">Vagas</th>
-          <th scope="col">Acoes</th>
+          <th scope="col">Vagas livres</th>
+          <th scope="col" class="tabela__acoes">Ações</th>
         </tr>
       </thead>
       <tbody>
         <% eventos.forEach(function (evento) { %>
           <tr>
             <td><a href="/eventos/<%= evento.id %>"><%= evento.titulo %></a></td>
-            <td><%= formatarDataHora(evento.data_inicio) %></td>
+            <td class="data"><%= formatarDataHora(evento.data_inicio) %></td>
             <td><%= evento.local %></td>
-            <td><%= evento.vagas_restantes %> de <%= evento.vagas %></td>
-            <td>
+            <td class="numero"><%= evento.vagas_restantes %> <span>de <%= evento.vagas %></span></td>
+            <td class="tabela__acoes">
               <div class="acoes">
+                <a class="botao botao--secundario" href="/eventos/<%= evento.id %>/inscritos">
+                  Inscritos
+                </a>
                 <a class="botao botao--secundario" href="/eventos/<%= evento.id %>/editar">Editar</a>
-                <a class="botao botao--secundario" href="/eventos/<%= evento.id %>/inscritos">Inscritos</a>
                 <%# A CSP bloqueia onsubmit inline; quem pergunta e /js/confirmacao.js. %>
                 <form
                   action="/eventos/<%= evento.id %>?_method=DELETE"
                   method="POST"
-                  data-confirmar="Excluir este evento? As inscricoes feitas nele tambem serao apagadas."
+                  data-confirmar="Excluir <%= evento.titulo %>? As inscrições feitas nele também serão apagadas."
                 >
                   <button class="botao botao--perigo" type="submit">Excluir</button>
                 </form>
