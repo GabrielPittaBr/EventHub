@@ -289,6 +289,19 @@ a:hover {
   color: var(--cor-texto-suave);
 }
 
+/* Stack da pagina 500, exibido apenas fora de producao. */
+.erro-detalhe {
+  background-color: var(--cor-erro-clara);
+  border: 1px solid var(--cor-erro);
+  border-radius: var(--raio);
+  padding: var(--espaco-md);
+  margin-bottom: var(--espaco-md);
+  overflow-x: auto;
+  font-size: 0.85rem;
+  color: var(--cor-texto);
+  white-space: pre-wrap;
+}
+
 /* ---------- Formularios ---------- */
 
 .formulario {

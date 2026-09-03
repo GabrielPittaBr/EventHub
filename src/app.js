@@ -8,6 +8,7 @@ const helmet = require('helmet');
 const methodOverride = require('method-override');
 
 const { sessao } = require('./config/sessao');
+const { rotaNaoEncontrada, tratadorDeErros } = require('./middlewares/erros');
 const locaisDaView = require('./middlewares/locaisDaView');
 const mensagensFlash = require('./middlewares/mensagensFlash');
 const rotas = require('./routes');
@@ -34,5 +35,11 @@ app.use(sessao);
 app.use(mensagensFlash);
 app.use(locaisDaView);
 app.use(rotas);
+
+// Os dois entram depois de todas as rotas, nesta ordem: o 404 so vale para o
+// que nenhuma rota atendeu, e o tratador de erros precisa ser o ultimo de todos
+// para receber o que qualquer camada acima encaminhar.
+app.use(rotaNaoEncontrada);
+app.use(tratadorDeErros);
 
 module.exports = app;
