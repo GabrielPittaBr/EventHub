@@ -41,10 +41,19 @@ async function executar() {
 
   // multipleStatements fica restrito a este script: e o que permite aplicar um
   // arquivo .sql inteiro de uma vez. O pool da aplicacao nao usa esta opcao.
+  // Conecta sem escolher banco: o schema pode ainda nao existir na primeira vez.
+  const { database, ...semBanco } = opcoesDeConexao;
   const conexao = await mysql.createConnection({
-    ...opcoesDeConexao,
+    ...semBanco,
     multipleStatements: true,
   });
+
+  // O nome vem de DB_NAME (configuracao, nao entrada de usuario) e vai entre
+  // crases porque identificador nao aceita placeholder de prepared statement.
+  await conexao.query(
+    `CREATE DATABASE IF NOT EXISTS \`${database}\` CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci`
+  );
+  await conexao.changeUser({ database });
 
   try {
     for (const arquivo of ARQUIVOS) {

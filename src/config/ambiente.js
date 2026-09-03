@@ -18,7 +18,6 @@ const VARIAVEIS_OBRIGATORIAS = [
   'DB_USER',
   'DB_PASSWORD',
   'DB_NAME',
-  'DB_SSL_CA',
   'SESSION_SECRET',
 ];
 

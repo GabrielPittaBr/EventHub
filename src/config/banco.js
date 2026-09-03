@@ -60,8 +60,11 @@ const opcoesDeConexao = {
   user: ambiente.banco.usuario,
   password: ambiente.banco.senha,
   database: ambiente.banco.nome,
-  // A Aiven so aceita conexao cifrada: o CA valida o certificado do servidor.
-  ssl: { ca: resolverCertificado(ambiente.banco.sslCa) },
+  // Cifrado quando ha CA (a Aiven exige). Sem DB_SSL_CA, e um MySQL local,
+  // que fala em texto claro na propria maquina.
+  ...(ambiente.banco.sslCa && ambiente.banco.sslCa.trim()
+    ? { ssl: { ca: resolverCertificado(ambiente.banco.sslCa) } }
+    : {}),
 };
 
 const pool = mysql.createPool({
