@@ -33,23 +33,20 @@ async function aplicarArquivo(conexao, arquivo) {
  * @throws {Error} Quando falta configuracao ou o banco recusa a operacao.
  */
 async function executar() {
-  // O require fica aqui dentro para que a falta de uma variavel de ambiente
-  // caia no catch de main() e vire uma mensagem legivel, nao um stack trace.
+  // Aqui dentro para a falta de variavel cair no catch, como mensagem.
   const { opcoesDeConexao } = require('../src/config/banco');
 
   console.log(`Preparando o banco ${opcoesDeConexao.database} em ${opcoesDeConexao.host}...`);
 
-  // multipleStatements fica restrito a este script: e o que permite aplicar um
-  // arquivo .sql inteiro de uma vez. O pool da aplicacao nao usa esta opcao.
-  // Conecta sem escolher banco: o schema pode ainda nao existir na primeira vez.
+  // multipleStatements so aqui, para aplicar o .sql inteiro; o pool da
+  // aplicacao nao usa esta opcao. Conecta sem banco: ele pode nao existir ainda.
   const { database, ...semBanco } = opcoesDeConexao;
   const conexao = await mysql.createConnection({
     ...semBanco,
     multipleStatements: true,
   });
 
-  // O nome vem de DB_NAME (configuracao, nao entrada de usuario) e vai entre
-  // crases porque identificador nao aceita placeholder de prepared statement.
+  // DB_NAME e configuracao, nao entrada de usuario: identificador nao aceita ?.
   await conexao.query(
     `CREATE DATABASE IF NOT EXISTS \`${database}\` CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci`
   );

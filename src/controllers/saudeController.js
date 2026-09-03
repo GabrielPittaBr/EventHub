@@ -27,8 +27,7 @@ async function verificar(req, res, next) {
   try {
     await banco.verificarConexao();
   } catch (erro) {
-    // O detalhe do erro fica no log do servidor; a resposta publica nao expoe
-    // host, usuario nem qualquer parte da configuracao do banco.
+    // O detalhe fica no log: a resposta publica nao expoe nada do banco.
     console.error('Healthcheck: o banco nao respondeu.', erro);
     resposta.status = 'erro';
     resposta.banco = 'indisponivel';

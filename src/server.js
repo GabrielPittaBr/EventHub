@@ -11,19 +11,14 @@ const ambiente = require('./config/ambiente');
  * @throws {Error} Quando falta configuracao ou a sessao nao pode ser preparada.
  */
 async function iniciar() {
-  // Configuracao incompleta derruba o processo com o nome da variavel que
-  // falta. Sem isso a falha so apareceria depois, como erro generico de conexao.
   ambiente.validar();
 
-  // Os dois requires ficam aqui dentro porque e o carregamento deles que monta
-  // o pool: um certificado ilegivel em DB_SSL_CA tambem precisa virar mensagem,
-  // nao stack trace.
+  // Requires aqui dentro: e o carregamento deles que monta o pool, e a falha
+  // precisa virar mensagem no catch de baixo.
   const app = require('./app');
   const { armazenamento } = require('./config/sessao');
 
-  // O store cria a tabela de sessoes de forma assincrona. Sem esperar por ela,
-  // um login que chegue logo apos o boot tentaria gravar em uma tabela que
-  // ainda nao existe e viraria erro 500.
+  // Sem esperar, um login logo apos o boot grava em tabela inexistente.
   await armazenamento.onReady();
 
   app.listen(ambiente.porta, () => {

@@ -49,8 +49,7 @@ const validarEvento = [
     .isISO8601()
     .withMessage('Informe uma data de termino valida.')
     .bail()
-    // Comparar como texto funciona porque o campo datetime-local sempre chega
-    // no formato 'YYYY-MM-DDTHH:MM', que ordena igual a data que representa.
+    // O formato 'YYYY-MM-DDTHH:MM' ordena como texto igual a data que representa.
     .custom((valor, { req }) => valor > req.body.dataInicio)
     .withMessage('O termino deve ser depois do inicio.'),
   body('vagas')
@@ -61,8 +60,7 @@ const validarEvento = [
     .withMessage('As vagas devem ser um numero inteiro maior que zero.'),
 ];
 
-// Vem antes de '/eventos/:id' de proposito: na ordem inversa, 'novo' seria
-// lido como um id.
+// Antes de '/eventos/:id': na ordem inversa, 'novo' viraria um id.
 rotasDeEventos.get('/eventos/novo', requireOrganizador, eventoController.exibirNovo);
 rotasDeEventos.post('/eventos', requireOrganizador, validarEvento, eventoController.criar);
 

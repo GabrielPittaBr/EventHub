@@ -45,8 +45,7 @@ function iniciarSessao(req, usuario) {
 
       req.session.usuario = usuario;
 
-      // Grava antes de redirecionar: sem isso a proxima pagina pode chegar ao
-      // banco antes da sessao ter sido escrita nele.
+      // Grava antes de redirecionar, senao a proxima pagina corre a sessao.
       req.session.save((erroAoSalvar) => {
         if (erroAoSalvar) {
           reject(erroAoSalvar);
@@ -132,8 +131,7 @@ async function registrar(req, res, next) {
 
     const { nome, email, senha, papel } = req.body;
 
-    // E-mail repetido e erro de preenchimento, entao volta como erro do campo.
-    // O UNIQUE do banco continua sendo a garantia final, tratada no catch.
+    // Erro de preenchimento; o UNIQUE do banco e a garantia final, no catch.
     if (await usuarioModel.buscarPorEmail(email)) {
       erros.email = 'Este e-mail ja esta cadastrado.';
       res.status(422).render('auth/registrar', dadosDoRegistro(req.body, erros));
@@ -148,8 +146,7 @@ async function registrar(req, res, next) {
     req.adicionarMensagem('sucesso', `Conta criada. Bem-vindo(a), ${nome}!`);
     res.redirect('/');
   } catch (erro) {
-    // Duas contas criadas ao mesmo tempo com o mesmo e-mail: o UNIQUE recusa a
-    // segunda. Continua sendo erro de formulario, nao erro 500.
+    // Corrida entre dois registros iguais: erro de formulario, nao 500.
     if (erro.code === 'ER_DUP_ENTRY') {
       res.status(422).render(
         'auth/registrar',
@@ -244,7 +241,6 @@ async function sair(req, res, next) {
         return;
       }
 
-      // A sessao ja morreu no banco; o cookie orfao sai junto.
       res.clearCookie(NOME_DO_COOKIE);
       res.redirect('/');
     });

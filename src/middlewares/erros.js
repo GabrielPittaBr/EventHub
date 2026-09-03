@@ -36,8 +36,7 @@ function rotaNaoEncontrada(req, res) {
 function tratadorDeErros(erro, req, res, next) {
   console.error(`Erro em ${req.method} ${req.originalUrl}:`, erro);
 
-  // Erro no meio de um render: o cabecalho ja foi enviado e trocar a pagina
-  // agora nao e mais possivel. So o Express pode fechar a conexao.
+  // Cabecalho ja enviado: nao da mais para trocar a pagina.
   if (res.headersSent) {
     next(erro);
     return;

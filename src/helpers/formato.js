@@ -34,8 +34,7 @@ function paraData(valor) {
     return null;
   }
 
-  // 'YYYY-MM-DD HH:MM:SS' vira 'YYYY-MM-DDTHH:MM:SS' para o Date entender como
-  // hora local em vez de tratar o valor como UTC.
+  // Sem o T, o Date leria o valor como UTC em vez de hora local.
   const data = new Date(valor.replace(' ', 'T'));
   return Number.isNaN(data.getTime()) ? null : data;
 }

@@ -36,12 +36,7 @@
   <div class="acoes">
     <a class="botao botao--secundario" href="/">Voltar para os eventos</a>
 
-    <%#
-      A ordem dos casos e a propria regra da tela: o dono cuida do evento; quem
-      ja esta inscrito so pode cancelar; evento encerrado ou lotado nao aceita
-      mais ninguem; quem esta deslogado e convidado a entrar. Nada disso
-      substitui a checagem do servidor, que roda de novo no POST.
-    %>
+    <%# Esconder o botao nao substitui a checagem do servidor, que roda no POST. %>
     <% if (usuario && usuario.id === evento.organizador_id) { %>
       <a class="botao botao--primario" href="/eventos/<%= evento.id %>/editar">Editar evento</a>
       <a class="botao botao--secundario" href="/eventos/<%= evento.id %>/inscritos">Ver inscritos</a>

@@ -150,8 +150,7 @@ async function confirmar(eventoId, usuarioId) {
   } catch (erro) {
     await conexao.rollback();
 
-    // Se ainda assim duas gravacoes colidirem na chave unica, quem perdeu a
-    // corrida ja esta inscrito: isso e um desfecho conhecido, nao um erro 500.
+    // Quem perde a corrida na chave unica ja esta inscrito: nao e erro 500.
     if (erro.code === CHAVE_DUPLICADA) {
       return RESULTADO.JA_INSCRITO;
     }

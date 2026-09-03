@@ -55,8 +55,6 @@ async function inscrever(req, res, next) {
       return;
     }
 
-    // O prazo nao depende de concorrencia — a data ja passou ou nao —, entao a
-    // recusa acontece aqui, sem custo de transacao.
     if (dataJaPassou(evento.data_inicio)) {
       req.adicionarMensagem('erro', AVISO_DE_PRAZO);
       res.redirect(`/eventos/${evento.id}`);
@@ -65,8 +63,6 @@ async function inscrever(req, res, next) {
 
     const resultado = await inscricaoModel.confirmar(evento.id, req.session.usuario.id);
 
-    // O evento sumiu entre a leitura e a transacao: quem chegou aqui esta
-    // olhando uma pagina que nao existe mais.
     if (resultado === inscricaoModel.RESULTADO.EVENTO_INEXISTENTE) {
       naoEncontrado(res);
       return;

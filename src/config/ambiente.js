@@ -1,6 +1,5 @@
 'use strict';
 
-// quiet: true evita o banner do dotenv poluir o log de inicializacao no Render.
 require('dotenv').config({ quiet: true });
 
 const PORTA_PADRAO = 3000;
@@ -30,17 +29,14 @@ const ambiente = {
   porta: Number(process.env.PORT) || PORTA_PADRAO,
   banco: {
     host: process.env.DB_HOST,
-    // Sem valor padrao de propósito: DB_PORT e obrigatoria e validada em
-    // validar(). Um fallback silencioso aqui esconderia um valor invalido e
-    // devolveria justamente o erro generico de conexao que queremos evitar.
+    // Sem padrao de proposito: um fallback aqui esconderia um valor invalido.
     porta: Number(process.env.DB_PORT),
     usuario: process.env.DB_USER,
     senha: process.env.DB_PASSWORD,
     nome: process.env.DB_NAME,
     sslCa: process.env.DB_SSL_CA,
   },
-  // Segredo que assina o cookie de sessao. Nunca tem fallback no codigo: um
-  // valor padrao em producao deixaria qualquer um forjar uma sessao.
+  // Sem fallback: um segredo padrao em producao deixa forjar sessao.
   sessaoSegredo: process.env.SESSION_SECRET,
 };
 
@@ -66,8 +62,6 @@ function validar() {
     );
   }
 
-  // Estar preenchida nao basta: uma porta invalida so apareceria mais tarde
-  // como falha de conexao, sem dizer de onde veio o problema.
   const portaDoBanco = Number(process.env.DB_PORT);
   if (
     !Number.isInteger(portaDoBanco) ||
