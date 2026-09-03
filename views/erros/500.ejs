@@ -1,0 +1,14 @@
+<section class="destaque">
+  <h1>Alguma coisa quebrou do nosso lado</h1>
+  <p class="destaque__texto">
+    O erro foi registrado e nada do que voce fez ate aqui foi perdido. Tente de novo em instantes.
+  </p>
+</section>
+
+<% if (typeof detalhe !== 'undefined' && detalhe) { %>
+  <pre class="erro-detalhe"><%= detalhe %></pre>
+<% } %>
+
+<div class="acoes">
+  <a class="botao botao--primario" href="/">Voltar para os eventos</a>
+</div>
