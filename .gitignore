@@ -141,3 +141,6 @@ dist
 vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
 .vite/
+
+# Certificados: o CA da Aiven fica em DB_SSL_CA, nunca no repositorio.
+*.pem
