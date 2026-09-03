@@ -34,7 +34,6 @@ Preencha o `.env` (veja a tabela abaixo) e prepare o banco:
 npm run db:setup    # cria o database, as tabelas e os dados de exemplo
 npm start           # http://localhost:3000
 npm run dev         # o mesmo, reiniciando a cada alteração
-npm test            # testes dos middlewares de erro
 ```
 
 `npm run db:setup` pode ser executado quantas vezes for preciso: o schema usa `CREATE TABLE IF NOT EXISTS` e o seed reaplica as mesmas linhas em vez de duplicá-las.
@@ -73,7 +72,6 @@ docs/     tickets do projeto e DEPLOY.md
 public/   CSS e arquivos estáticos
 scripts/  db-setup.js
 src/      config, controllers, helpers, middlewares, models, routes
-test/     testes com o runner nativo do Node
 views/    templates EJS
 ```
 
