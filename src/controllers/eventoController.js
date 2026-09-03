@@ -62,9 +62,6 @@ async function exibirDetalhes(req, res, next) {
       return;
     }
 
-    // A inscricao de quem esta olhando decide o que a pagina oferece:
-    // inscrever-se, cancelar ou entrar na conta. Visitante deslogado nao tem
-    // inscricao a procurar.
     const usuario = req.session.usuario;
     const inscricao = usuario
       ? await inscricaoModel.buscarDeUsuarioEmEvento(evento.id, usuario.id)
@@ -153,8 +150,7 @@ async function criar(req, res, next) {
       dataInicio: paraDataHoraDoBanco(dataInicio),
       dataFim: paraDataHoraDoBanco(dataFim),
       vagas: Number(vagas),
-      // Vem sempre da sessao. Aceitar um organizador_id do formulario deixaria
-      // qualquer um publicar evento em nome de outra pessoa.
+      // Sempre da sessao: pelo formulario, qualquer um publicaria em nome de outro.
       organizadorId: req.session.usuario.id,
     });
 

@@ -10,11 +10,7 @@ const ambiente = require('./ambiente');
 const LIMITE_DE_CONEXOES = 10;
 const INICIO_DO_CERTIFICADO = '-----BEGIN';
 
-// Sem as credenciais nao ha pool possivel: falha aqui, com o nome da variavel.
-// A checagem se repete porque este modulo tem duas portas de entrada: o
-// servidor (que ja valida em server.js, para morrer antes de subir o Express) e
-// o script `npm run db:setup`, que nunca passa por server.js. Validar aqui
-// garante a mesma mensagem clara nos dois caminhos.
+// Repete a validacao de server.js porque o db:setup nao passa por la.
 ambiente.validar();
 
 /**
@@ -60,8 +56,7 @@ const opcoesDeConexao = {
   user: ambiente.banco.usuario,
   password: ambiente.banco.senha,
   database: ambiente.banco.nome,
-  // Cifrado quando ha CA (a Aiven exige). Sem DB_SSL_CA, e um MySQL local,
-  // que fala em texto claro na propria maquina.
+  // Sem DB_SSL_CA nao ha TLS: e o caso do MySQL local.
   ...(ambiente.banco.sslCa && ambiente.banco.sslCa.trim()
     ? { ssl: { ca: resolverCertificado(ambiente.banco.sslCa) } }
     : {}),

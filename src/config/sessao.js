@@ -18,9 +18,7 @@ const NOME_DO_COOKIE = 'eventhub.sid';
 
 const ArmazenamentoMySQL = criarArmazenamentoMySQL(session);
 
-// O store reaproveita o pool da aplicacao em vez de abrir uma conexao propria:
-// assim a sessao usa o mesmo SSL/TLS ja configurado e o banco recebe um unico
-// conjunto de conexoes. A tabela de sessoes e criada pelo proprio store.
+// Reaproveita o pool da aplicacao; a tabela de sessoes o store cria sozinho.
 const armazenamento = new ArmazenamentoMySQL(
   {
     createDatabaseTable: true,
@@ -41,12 +39,9 @@ const sessao = session({
   name: NOME_DO_COOKIE,
   secret: ambiente.sessaoSegredo,
   store: armazenamento,
-  // Nao reescreve a sessao a cada requisicao, so quando ela muda.
   resave: false,
-  // Visitante sem login nao ocupa linha na tabela de sessoes.
   saveUninitialized: false,
-  // Em producao o Render termina o HTTPS antes da aplicacao; sem isto o
-  // express-session nao reconheceria a requisicao como segura.
+  // O Render termina o HTTPS antes da aplicacao.
   proxy: ambiente.emProducao,
   cookie: {
     httpOnly: true,
