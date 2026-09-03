@@ -28,7 +28,7 @@ function idValido(valor) {
  * @returns {void}
  */
 function naoEncontrado(res) {
-  res.status(404).render('erros/404', { titulo: 'Pagina nao encontrada' });
+  res.status(404).render('erros/404', { titulo: 'Página não encontrada' });
 }
 
 /**
@@ -38,7 +38,7 @@ function naoEncontrado(res) {
  * @returns {void}
  */
 function acessoNegado(res) {
-  res.status(403).render('erros/403', { titulo: 'Acesso negado' });
+  res.status(403).render('erros/403', { titulo: 'Área restrita' });
 }
 
 /**

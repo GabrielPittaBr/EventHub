@@ -13,7 +13,7 @@ const CUSTO_DO_HASH = 10;
  * dois falhou entregaria a quem tenta adivinhar a informacao de que aquele
  * e-mail tem conta no sistema.
  */
-const CREDENCIAL_INVALIDA = 'E-mail ou senha invalidos.';
+const CREDENCIAL_INVALIDA = 'E-mail ou senha inválidos.';
 
 /**
  * Hash descartavel, com o mesmo custo dos hashes reais, comparado quando o
@@ -133,7 +133,7 @@ async function registrar(req, res, next) {
 
     // Erro de preenchimento; o UNIQUE do banco e a garantia final, no catch.
     if (await usuarioModel.buscarPorEmail(email)) {
-      erros.email = 'Este e-mail ja esta cadastrado.';
+      erros.email = 'Este e-mail já está cadastrado.';
       res.status(422).render('auth/registrar', dadosDoRegistro(req.body, erros));
       return;
     }
@@ -150,7 +150,7 @@ async function registrar(req, res, next) {
     if (erro.code === 'ER_DUP_ENTRY') {
       res.status(422).render(
         'auth/registrar',
-        dadosDoRegistro(req.body, { email: 'Este e-mail ja esta cadastrado.' })
+        dadosDoRegistro(req.body, { email: 'Este e-mail já está cadastrado.' })
       );
       return;
     }

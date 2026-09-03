@@ -1,6 +1,6 @@
 'use strict';
 
-const { formatarDataHora } = require('../helpers/formato');
+const { formatarDataHora, partesDaData } = require('../helpers/formato');
 
 /**
  * Disponibiliza para todas as views os dados que o layout base espera.
@@ -20,6 +20,7 @@ function locaisDaView(req, res, next) {
   res.locals.usuario = (req.session && req.session.usuario) || null;
   res.locals.caminhoAtual = req.path;
   res.locals.formatarDataHora = formatarDataHora;
+  res.locals.partesDaData = partesDaData;
   next();
 }
 

@@ -1,7 +1,7 @@
-<section class="destaque">
-  <h1><%= editando ? 'Editar evento' : 'Novo evento' %></h1>
-  <p class="destaque__texto">
-    Os participantes veem estas informacoes na pagina do evento.
+<section class="abertura">
+  <h1 class="abertura__titulo"><%= editando ? 'Editar evento' : 'Publicar evento' %></h1>
+  <p class="abertura__linha">
+    É isto que os participantes veem na página do evento e o que decide se eles se inscrevem.
   </p>
 </section>
 
@@ -12,7 +12,7 @@
   novalidate
 >
   <div class="campo-grupo">
-    <label for="titulo">Titulo</label>
+    <label for="titulo">Título</label>
     <input
       class="campo <%= erros.titulo ? 'campo--invalido' : '' %>"
       type="text"
@@ -28,7 +28,7 @@
   </div>
 
   <div class="campo-grupo">
-    <label for="descricao">Descricao</label>
+    <label for="descricao">Descrição</label>
     <textarea
       class="campo <%= erros.descricao ? 'campo--invalido' : '' %>"
       id="descricao"
@@ -38,6 +38,8 @@
     ><%= valores.descricao %></textarea>
     <% if (erros.descricao) { %>
       <span class="campo-erro"><%= erros.descricao %></span>
+    <% } else { %>
+      <span class="campo-ajuda">Conte o que acontece no evento, para quem é e o que levar.</span>
     <% } %>
   </div>
 
@@ -54,11 +56,13 @@
     />
     <% if (erros.local) { %>
       <span class="campo-erro"><%= erros.local %></span>
+    <% } else { %>
+      <span class="campo-ajuda">Onde as pessoas devem chegar, como "Auditório do bloco B".</span>
     <% } %>
   </div>
 
   <div class="campo-grupo">
-    <label for="dataInicio">Inicio</label>
+    <label for="dataInicio">Início</label>
     <input
       class="campo <%= erros.dataInicio ? 'campo--invalido' : '' %>"
       type="datetime-local"
@@ -69,11 +73,13 @@
     />
     <% if (erros.dataInicio) { %>
       <span class="campo-erro"><%= erros.dataInicio %></span>
+    <% } else { %>
+      <span class="campo-ajuda">As inscrições fecham sozinhas quando o evento começa.</span>
     <% } %>
   </div>
 
   <div class="campo-grupo">
-    <label for="dataFim">Termino</label>
+    <label for="dataFim">Término</label>
     <input
       class="campo <%= erros.dataFim ? 'campo--invalido' : '' %>"
       type="datetime-local"
@@ -102,13 +108,13 @@
     <% if (erros.vagas) { %>
       <span class="campo-erro"><%= erros.vagas %></span>
     <% } else { %>
-      <span class="campo-ajuda">Total de vagas oferecidas, um numero inteiro maior que zero.</span>
+      <span class="campo-ajuda">Quantas pessoas cabem. Um número inteiro maior que zero.</span>
     <% } %>
   </div>
 
   <div class="acoes">
     <button class="botao botao--primario" type="submit">
-      <%= editando ? 'Salvar alteracoes' : 'Criar evento' %>
+      <%= editando ? 'Salvar alterações' : 'Publicar evento' %>
     </button>
     <a class="botao botao--texto" href="/painel">Cancelar</a>
   </div>

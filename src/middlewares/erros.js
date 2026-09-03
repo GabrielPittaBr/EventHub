@@ -42,6 +42,13 @@ function tratadorDeErros(erro, req, res, next) {
     return;
   }
 
+  // Quando quem quebrou foi a sessao, locaisDaView nem chegou a rodar e o
+  // layout ficaria sem o que o cabecalho le. Sem estes tres, a propria pagina
+  // de erro estoura e o Express cospe o stack na tela do visitante.
+  res.locals.usuario = res.locals.usuario || null;
+  res.locals.caminhoAtual = res.locals.caminhoAtual || req.path;
+  res.locals.mensagens = res.locals.mensagens || [];
+
   res.status(500).render('erros/500', {
     titulo: 'Erro interno',
     detalhe: ambiente.emProducao ? null : erro.stack || String(erro),

@@ -76,11 +76,36 @@ function dataJaPassou(valor) {
   return data !== null && data.getTime() <= Date.now();
 }
 
+const MESES = ['jan', 'fev', 'mar', 'abr', 'mai', 'jun', 'jul', 'ago', 'set', 'out', 'nov', 'dez'];
+
+/**
+ * Devolve a data em pedacos separados, que e o que a coluna de data da lista
+ * de eventos monta: dia grande, mes abreviado e ano miudo.
+ *
+ * @param {Date|string} valor Data vinda do banco.
+ * @returns {{dia: string, mes: string, ano: string, hora: string}|null}
+ *   Pedacos prontos para a tela, ou null quando a data nao e valida.
+ */
+function partesDaData(valor) {
+  const pedacos = pedacosDaData(valor);
+
+  if (!pedacos) {
+    return null;
+  }
+
+  return {
+    dia: pedacos.dia,
+    mes: MESES[Number(pedacos.mes) - 1],
+    ano: pedacos.ano,
+    hora: `${pedacos.hora}:${pedacos.minuto}`,
+  };
+}
+
 /**
  * Formata uma data para leitura na tela, no padrao brasileiro.
  *
  * @param {Date|string} valor Data vinda do banco.
- * @returns {string} Data como 'dd/mm/aaaa as HH:MM', ou string vazia.
+ * @returns {string} Data como 'dd/mm/aaaa às HH:MM', ou string vazia.
  */
 function formatarDataHora(valor) {
   const pedacos = pedacosDaData(valor);
@@ -89,7 +114,7 @@ function formatarDataHora(valor) {
     return '';
   }
 
-  return `${pedacos.dia}/${pedacos.mes}/${pedacos.ano} as ${pedacos.hora}:${pedacos.minuto}`;
+  return `${pedacos.dia}/${pedacos.mes}/${pedacos.ano} às ${pedacos.hora}:${pedacos.minuto}`;
 }
 
 /**
@@ -126,4 +151,10 @@ function paraDataHoraDoBanco(valor) {
   return semT.length === 16 ? `${semT}:00` : semT;
 }
 
-module.exports = { dataJaPassou, formatarDataHora, paraCampoDataHora, paraDataHoraDoBanco };
+module.exports = {
+  dataJaPassou,
+  formatarDataHora,
+  paraCampoDataHora,
+  paraDataHoraDoBanco,
+  partesDaData,
+};

@@ -1,0 +1,32 @@
+<%#
+  Medidor de vagas. Usado na lista de eventos e no painel de inscricao, que so
+  mudam de tamanho. Espera `vagas`, `restantes` e, opcionalmente, `variacao`.
+%>
+<%
+  const total = Math.max(0, Number(vagas) || 0);
+  const livres = Math.min(total, Math.max(0, Number(restantes) || 0));
+  const ocupadas = total - livres;
+  // A barra mede o que sobrou, igual ao numero acima dela: barra cheia e evento
+  // vazio. Medir o contrario faria os dois dizerem coisas opostas.
+  const disponivel = total > 0 ? Math.round((livres / total) * 100) : 0;
+  const estado = livres === 0 ? 'esgotado' : livres / total <= 0.2 ? 'ultimas' : 'aberto';
+  const modificador = typeof variacao !== 'undefined' && variacao ? ' vagas--' + variacao : '';
+%>
+<div class="vagas vagas--<%= estado %><%= modificador %>">
+  <p class="vagas__numero">
+    <span class="vagas__livres"><%= livres %></span>
+    <span class="vagas__total">de <%= total %> vagas</span>
+  </p>
+  <div
+    class="vagas__barra"
+    role="img"
+    aria-label="<%= ocupadas %> de <%= total %> vagas preenchidas"
+  >
+    <span style="width: <%= disponivel %>%"></span>
+  </div>
+  <% if (estado === 'esgotado') { %>
+    <p class="vagas__aviso">Sem vagas</p>
+  <% } else if (estado === 'ultimas') { %>
+    <p class="vagas__aviso">Últimas vagas</p>
+  <% } %>
+</div>

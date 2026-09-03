@@ -1,18 +1,29 @@
-<section class="destaque">
-  <h1>Eventos abertos para inscricao</h1>
-  <p class="destaque__texto">
-    Encontre eventos academicos e corporativos, veja as vagas disponiveis e garanta a sua.
+<%
+  const vagasLivres = eventos.reduce(function (soma, evento) {
+    return soma + Math.max(0, Number(evento.vagas_restantes) || 0);
+  }, 0);
+%>
+
+<section class="abertura">
+  <h1 class="abertura__titulo">Eventos abertos</h1>
+  <p class="abertura__linha">
+    <% if (eventos.length === 0) { %>
+      Nada aberto no momento.
+    <% } else { %>
+      <%= eventos.length %> <%= eventos.length === 1 ? 'evento' : 'eventos' %> com inscrição
+      aberta e <%= vagasLivres %> <%= vagasLivres === 1 ? 'vaga livre' : 'vagas livres' %>.
+    <% } %>
   </p>
 
-  <form class="busca" action="/" method="GET">
-    <label class="rotulo-oculto" for="busca">Buscar por titulo</label>
+  <form class="busca" action="/" method="GET" role="search">
+    <label class="rotulo-oculto" for="busca">Buscar evento pelo título</label>
     <input
       class="campo"
       type="search"
       id="busca"
       name="busca"
       value="<%= busca %>"
-      placeholder="Buscar por titulo"
+      placeholder="Buscar pelo título"
       maxlength="160"
     />
     <button class="botao botao--primario" type="submit">Buscar</button>
@@ -23,33 +34,37 @@
 </section>
 
 <% if (eventos.length === 0) { %>
-  <p class="vazio">
+  <div class="vazio">
     <% if (busca) { %>
-      Nenhum evento futuro encontrado para "<%= busca %>". Tente outro termo ou veja todos os eventos.
+      <p>Nenhum evento aberto tem "<%= busca %>" no título.</p>
+      <a class="botao botao--secundario" href="/">Ver todos os eventos</a>
     <% } else { %>
-      Nenhum evento futuro publicado por enquanto. Volte em breve.
+      <p>Nenhum evento com inscrição aberta agora. Os próximos aparecem aqui assim que forem publicados.</p>
     <% } %>
-  </p>
+  </div>
 <% } else { %>
-  <ul class="grade-eventos">
+  <ul class="lista-eventos">
     <% eventos.forEach(function (evento) { %>
-      <li class="cartao">
-        <h2 class="cartao__titulo"><%= evento.titulo %></h2>
-        <dl class="cartao__dados">
-          <div>
-            <dt>Quando</dt>
-            <dd><%= formatarDataHora(evento.data_inicio) %></dd>
-          </div>
-          <div>
-            <dt>Onde</dt>
-            <dd><%= evento.local %></dd>
-          </div>
-          <div>
-            <dt>Vagas restantes</dt>
-            <dd><%= evento.vagas_restantes %> de <%= evento.vagas %></dd>
-          </div>
-        </dl>
-        <a class="botao botao--secundario" href="/eventos/<%= evento.id %>">Ver detalhes</a>
+      <% const data = partesDaData(evento.data_inicio); %>
+      <li class="evento">
+        <p class="evento__data">
+          <span class="evento__dia"><%= data ? data.dia : '--' %></span>
+          <span class="evento__mes"><%= data ? data.mes : '' %></span>
+          <span class="evento__ano"><%= data ? data.ano : '' %></span>
+        </p>
+
+        <div class="evento__corpo">
+          <h2 class="evento__titulo">
+            <a href="/eventos/<%= evento.id %>"><%= evento.titulo %></a>
+          </h2>
+          <p class="evento__onde">
+            <%= evento.local %><% if (data) { %>, às <%= data.hora %><% } %>
+          </p>
+        </div>
+
+        <div class="evento__vagas">
+          <%- include('partials/vagas', { vagas: evento.vagas, restantes: evento.vagas_restantes }) %>
+        </div>
       </li>
     <% }); %>
   </ul>

@@ -29,10 +29,10 @@ const validarRegistro = [
     .withMessage('Informe o seu e-mail.')
     .bail()
     .isEmail()
-    .withMessage('Informe um e-mail valido.')
+    .withMessage('Informe um e-mail válido.')
     .bail()
     .isLength({ max: 180 })
-    .withMessage('O e-mail deve ter no maximo 180 caracteres.')
+    .withMessage('O e-mail deve ter no máximo 180 caracteres.')
     .normalizeEmail(),
   body('senha')
     .notEmpty()
@@ -45,7 +45,7 @@ const validarRegistro = [
     .withMessage('Confirme a senha.')
     .bail()
     .custom((valor, { req }) => valor === req.body.senha)
-    .withMessage('A confirmacao nao confere com a senha.'),
+    .withMessage('A confirmação não confere com a senha.'),
   body('papel')
     .isIn(PAPEIS)
     .withMessage('Escolha entre organizador e participante.'),
@@ -63,7 +63,7 @@ const validarLogin = [
     .withMessage('Informe o seu e-mail.')
     .bail()
     .isEmail()
-    .withMessage('Informe um e-mail valido.')
+    .withMessage('Informe um e-mail válido.')
     .normalizeEmail(),
   body('senha').notEmpty().withMessage('Informe a sua senha.'),
 ];

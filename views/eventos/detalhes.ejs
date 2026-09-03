@@ -1,59 +1,87 @@
-<section class="destaque">
-  <h1><%= evento.titulo %></h1>
-  <p class="destaque__texto">Organizado por <%= evento.organizador_nome %>.</p>
+<% const inicio = partesDaData(evento.data_inicio); %>
+<% const ehDono = usuario && usuario.id === evento.organizador_id; %>
+
+<section class="abertura">
+  <h1 class="abertura__titulo"><%= evento.titulo %></h1>
+  <p class="abertura__linha">Organizado por <%= evento.organizador_nome %></p>
 </section>
 
-<article class="cartao">
-  <dl class="cartao__dados">
-    <div>
-      <dt>Inicio</dt>
-      <dd><%= formatarDataHora(evento.data_inicio) %></dd>
-    </div>
-    <div>
-      <dt>Termino</dt>
-      <dd><%= formatarDataHora(evento.data_fim) %></dd>
-    </div>
-    <div>
-      <dt>Local</dt>
-      <dd><%= evento.local %></dd>
-    </div>
-    <div>
-      <dt>Vagas</dt>
-      <dd><%= evento.vagas_restantes %> restantes de <%= evento.vagas %></dd>
-    </div>
-  </dl>
+<div class="evento-detalhe">
+  <div class="evento-detalhe__texto">
+    <dl class="ficha">
+      <div>
+        <dt>Início</dt>
+        <dd><%= formatarDataHora(evento.data_inicio) %></dd>
+      </div>
+      <div>
+        <dt>Término</dt>
+        <dd><%= formatarDataHora(evento.data_fim) %></dd>
+      </div>
+      <div>
+        <dt>Local</dt>
+        <dd><%= evento.local %></dd>
+      </div>
+    </dl>
 
-  <h2 class="cartao__titulo">Sobre o evento</h2>
-  <p><%= evento.descricao %></p>
+    <h2>Sobre o evento</h2>
+    <p><%= evento.descricao %></p>
+  </div>
 
-  <% if (inscricao) { %>
-    <p class="cartao__status">
-      Sua inscricao:
-      <span class="selo selo--<%= inscricao.status %>"><%= inscricao.status %></span>
-    </p>
-  <% } %>
-
-  <div class="acoes">
-    <a class="botao botao--secundario" href="/">Voltar para os eventos</a>
+  <aside class="painel-inscricao">
+    <%- include('../partials/vagas', {
+      vagas: evento.vagas,
+      restantes: evento.vagas_restantes,
+      variacao: 'painel',
+    }) %>
 
     <%# Esconder o botao nao substitui a checagem do servidor, que roda no POST. %>
-    <% if (usuario && usuario.id === evento.organizador_id) { %>
-      <a class="botao botao--primario" href="/eventos/<%= evento.id %>/editar">Editar evento</a>
-      <a class="botao botao--secundario" href="/eventos/<%= evento.id %>/inscritos">Ver inscritos</a>
+    <% if (ehDono) { %>
+      <p class="painel-inscricao__nota">Você organiza este evento.</p>
+      <div class="acoes">
+        <a class="botao botao--primario botao--largo" href="/eventos/<%= evento.id %>/editar">
+          Editar evento
+        </a>
+        <a class="botao botao--secundario botao--largo" href="/eventos/<%= evento.id %>/inscritos">
+          Ver inscritos
+        </a>
+      </div>
     <% } else if (inscricao && inscricao.status === 'confirmada') { %>
+      <p class="painel-inscricao__nota">
+        <span class="selo selo--confirmada">Inscrição confirmada</span>
+      </p>
       <form action="/inscricoes/<%= inscricao.id %>?_method=DELETE" method="POST">
-        <button class="botao botao--perigo" type="submit">Cancelar inscricao</button>
+        <button class="botao botao--secundario botao--largo" type="submit">
+          Cancelar minha inscrição
+        </button>
       </form>
+      <p class="painel-inscricao__nota">
+        Cancelar libera a sua vaga para outra pessoa. Dá para se inscrever de novo enquanto
+        houver vaga.
+      </p>
     <% } else if (inscricoesEncerradas) { %>
-      <span class="selo selo--indisponivel">Inscricoes encerradas</span>
+      <p class="painel-inscricao__nota">
+        <span class="selo selo--neutro">Inscrições encerradas</span>
+      </p>
+      <p class="painel-inscricao__nota">O evento já começou<% if (inicio) { %> em <%= inicio.dia %>/<%= inicio.mes %><% } %>.</p>
     <% } else if (evento.vagas_restantes <= 0) { %>
-      <span class="selo selo--indisponivel">Evento lotado</span>
+      <p class="painel-inscricao__nota">
+        <span class="selo selo--neutro">Sem vagas</span>
+      </p>
+      <p class="painel-inscricao__nota">
+        Todas as vagas foram preenchidas. Se alguém cancelar, a vaga reabre aqui.
+      </p>
     <% } else if (usuario) { %>
       <form action="/eventos/<%= evento.id %>/inscricoes" method="POST">
-        <button class="botao botao--primario" type="submit">Inscrever-se</button>
+        <button class="botao botao--primario botao--largo" type="submit">Inscrever-se</button>
       </form>
+      <p class="painel-inscricao__nota">
+        A inscrição vale até o evento começar e pode ser cancelada a qualquer momento.
+      </p>
     <% } else { %>
-      <a class="botao botao--primario" href="/auth/login">Entre para se inscrever</a>
+      <a class="botao botao--primario botao--largo" href="/auth/login">Entrar para se inscrever</a>
+      <p class="painel-inscricao__nota">
+        Ainda não tem conta? <a href="/auth/registrar">Crie uma em um minuto.</a>
+      </p>
     <% } %>
-  </div>
-</article>
+  </aside>
+</div>

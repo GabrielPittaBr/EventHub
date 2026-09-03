@@ -19,20 +19,20 @@ const inscricaoModel = require('../models/inscricaoModel');
 const AVISO_DA_INSCRICAO = {
   [inscricaoModel.RESULTADO.CONFIRMADA]: {
     tipo: 'sucesso',
-    texto: 'Inscricao confirmada.',
+    texto: 'Inscrição confirmada.',
   },
   [inscricaoModel.RESULTADO.JA_INSCRITO]: {
     tipo: 'info',
-    texto: 'Voce ja esta inscrito neste evento.',
+    texto: 'Você já está inscrito neste evento.',
   },
   [inscricaoModel.RESULTADO.LOTADO]: {
     tipo: 'erro',
-    texto: 'Este evento ja preencheu todas as vagas.',
+    texto: 'Este evento já preencheu todas as vagas.',
   },
 };
 
 /** Recusa por prazo, decidida antes de abrir a transacao. */
-const AVISO_DE_PRAZO = 'Este evento ja comecou: as inscricoes estao encerradas.';
+const AVISO_DE_PRAZO = 'Este evento já começou, então as inscrições estão encerradas.';
 
 /**
  * Inscreve o usuario da sessao no evento da URL.
@@ -107,12 +107,12 @@ async function cancelar(req, res, next) {
     }
 
     if (inscricao.status === 'cancelada') {
-      req.adicionarMensagem('info', 'Esta inscricao ja estava cancelada.');
+      req.adicionarMensagem('info', 'Esta inscrição já estava cancelada.');
     } else {
       await inscricaoModel.cancelar(inscricao.evento_id, inscricao.usuario_id);
       req.adicionarMensagem(
         'sucesso',
-        'Inscricao cancelada. A vaga voltou a ficar disponivel.'
+        'Inscrição cancelada. A vaga voltou a ficar disponível.'
       );
     }
 
@@ -136,7 +136,7 @@ async function exibirMinhas(req, res, next) {
   try {
     const inscricoes = await inscricaoModel.listarDeUsuario(req.session.usuario.id);
 
-    res.render('inscricoes/minhas', { titulo: 'Minhas inscricoes', inscricoes });
+    res.render('inscricoes/minhas', { titulo: 'Minhas inscrições', inscricoes });
   } catch (erro) {
     next(erro);
   }

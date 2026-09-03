@@ -62,7 +62,7 @@ function requireOrganizador(req, res, next) {
   }
 
   if (usuario.papel !== 'organizador') {
-    res.status(403).render('erros/403', { titulo: 'Acesso negado' });
+    res.status(403).render('erros/403', { titulo: 'Área restrita' });
     return;
   }
 
