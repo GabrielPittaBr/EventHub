@@ -74,7 +74,3 @@ scripts/  db-setup.js
 src/      config, controllers, helpers, middlewares, models, routes
 views/    templates EJS
 ```
-
-## Deploy
-
-O passo a passo completo (Aiven + Render) está em [`docs/DEPLOY.md`](docs/DEPLOY.md).
