@@ -7,13 +7,15 @@ const expressLayouts = require('express-ejs-layouts');
 const helmet = require('helmet');
 const methodOverride = require('method-override');
 
+const { sessao } = require('./config/sessao');
+const { rotaNaoEncontrada, tratadorDeErros } = require('./middlewares/erros');
 const locaisDaView = require('./middlewares/locaisDaView');
+const mensagensFlash = require('./middlewares/mensagensFlash');
 const rotas = require('./routes');
 
 const app = express();
 
-// O Render coloca a aplicacao atras de um proxy. Sem confiar nesse proxy o
-// Express nao enxerga o HTTPS original e o cookie de sessao "secure" nao grava.
+// Sem confiar no proxy do Render o cookie "secure" nunca grava.
 app.set('trust proxy', 1);
 
 app.set('view engine', 'ejs');
@@ -26,7 +28,13 @@ app.use(express.urlencoded({ extended: false }));
 app.use(methodOverride('_method'));
 app.use(express.static(path.join(__dirname, '..', 'public')));
 
+app.use(sessao);
+app.use(mensagensFlash);
 app.use(locaisDaView);
 app.use(rotas);
+
+// Depois de todas as rotas, e o tratador de erros por ultimo de todos.
+app.use(rotaNaoEncontrada);
+app.use(tratadorDeErros);
 
 module.exports = app;

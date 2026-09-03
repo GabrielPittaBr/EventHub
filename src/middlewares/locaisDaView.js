@@ -1,9 +1,15 @@
 'use strict';
 
+const { formatarDataHora } = require('../helpers/formato');
+
 /**
  * Disponibiliza para todas as views os dados que o layout base espera.
- * O usuario logado e as mensagens flash so passam a ser preenchidos de verdade
- * quando a sessao entrar; ate la o layout renderiza no estado de visitante.
+ * As mensagens flash sao responsabilidade do middleware mensagensFlash, que
+ * roda antes deste e ja preencheu res.locals.mensagens.
+ *
+ * A formatacao de data entra aqui porque varias telas mostram as datas do
+ * mesmo jeito; deixar cada view formatar por conta abriria espaco para
+ * formatos diferentes pelo sistema.
  *
  * @param {import('express').Request} req Requisicao HTTP.
  * @param {import('express').Response} res Resposta HTTP.
@@ -12,8 +18,8 @@
  */
 function locaisDaView(req, res, next) {
   res.locals.usuario = (req.session && req.session.usuario) || null;
-  res.locals.mensagens = [];
   res.locals.caminhoAtual = req.path;
+  res.locals.formatarDataHora = formatarDataHora;
   next();
 }
 
